@@ -42,32 +42,37 @@ function createImageElement(source, id){
 
 function addButtonListeners(buttonLeft, buttonRight, imageArray){ // double closure
   let state = 1; //shared state variable
-  function carouselButton(button, imageArray, forward = true){ //first closure
-  return (button.addEventListener('click', (event) => { 
-    if (forward){
-      state === 4 ? state = 1 : state += 1; //wrap around right
-      } else {
-      state === 1 ? state = 4 : state -= 1; //wrap around left
-      }
 
-    imageArray.forEach(image => { //checks last digit of id for match of state and changes image
-      let splitString= image.id.split("");
-      let imgNum = Number.parseInt(splitString[splitString.length -1]);
-      console.log(imgNum);
-      console.log(splitString);
-      if ( imgNum === state){
-        image.style.display = 'inline-block';
-      } else{
-        image.style.display = 'none';
-      }
-      console.log(state);
+  function carouselButton(button, imageArray, forward = true){ //first closure
+    return (button.addEventListener('click', (event) => { 
+      if (forward){
+        state === 4 ? state = 1 : state += 1; //wrap around right
+        } else {
+        state === 1 ? state = 4 : state -= 1; //wrap around left
+        }
+
+      imageArray.forEach(image => { //checks last digit of id for match of state and changes image
+        let splitString= image.id.split("");
+        let imgNum = Number.parseInt(splitString[splitString.length -1]);
+        console.log(imgNum);
+        console.log(splitString);
+        if (imgNum === state){
+          image.style.display = 'inline-block';
+          image.classList.add('width-100')
+        } else{
+          image.style.display = 'none';
+        }
+        console.log(state);
+        console.log('carousel event', event)
+      })
     })
-  })
   )
   
 }
-carouselButton(buttonLeft, imageArray, true); //invoke left button
-carouselButton(buttonRight, imageArray, false); //invoke right button
+
+carouselButton(buttonLeft, imageArray, false); //invoke left button
+carouselButton(buttonRight, imageArray, true); //invoke right button
+
 }
 
 function createCarousel(){ //creates carousel and appends it to container
@@ -88,9 +93,10 @@ function createCarousel(){ //creates carousel and appends it to container
 
   let imageArray = [firstImage, secondImage, thirdImage, fourthImage];
 
-  let buttonEventListeners = addButtonListeners(leftButton, rightButton, imageArray)
+ 
+  addButtonListeners(leftButton, rightButton, imageArray); //invoke closure for carousel buttons
   
-  buttonEventListeners; //invoke carousel button closure
+ 
 
   firstImage.style.display = 'inline-block';
 
