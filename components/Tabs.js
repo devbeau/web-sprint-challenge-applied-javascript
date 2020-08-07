@@ -23,6 +23,28 @@ function getTabs(){ // API call to get topics for the tabs container
             debugger;
         })
 }
+
+function filterOnClick(element, filterSubject){
+    
+    element.addEventListener('click', event => {
+        let articleList = document.getElementsByClassName('card');
+        let articleArray = [...articleList];
+        console.log(filterSubject);
+        console.log(articleArray);
+        for (let article of articleArray) {
+            let topicText = article.lastElementChild.lastElementChild;
+            if (filterSubject.split('.js').join('')
+                .toLowerCase() !== (topicText.textContent)){
+                // debugger;
+                console.log(filterSubject.split('.js').join('').toLowerCase(), article, topicText.textContent);
+                article.style.display = 'none';
+            } else {
+                article.style.display = 'flex';
+            }              
+        }
+    })
+}
+
 function createHTMLElement(htmlElement, className = 0, textContent = 0){ // create elements with class and textcontent
     let element = document.createElement(htmlElement);
     className !== 0 ? element.classList.add(className) : element;
@@ -34,6 +56,7 @@ function createTabs(tabTopicArray){ // function to create and append tabs from a
     let container = document.querySelector('.topics');
     tabTopicArray.forEach((item) => {
         let topicDiv = createHTMLElement('div', 'tab', `${item}`);
+        filterOnClick(topicDiv, topicDiv.textContent);
         container.appendChild(topicDiv);
     })
 }
