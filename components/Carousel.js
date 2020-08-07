@@ -39,9 +39,9 @@ function createImageElement(source, id){
  image.style.borderRadius = '200px';
  return image;
 }
-
-function carouselButton(button, imageArray, forward = true){
+function addButtonListeners(buttonLeft, buttonRight, imageArray){
   let state = 1; 
+  function carouselButton(button, imageArray, forward = true){
   return (button.addEventListener('click', (event) => {
     if (forward){
       state === 4 ? state = 1 : state += 1;
@@ -63,8 +63,11 @@ function carouselButton(button, imageArray, forward = true){
     })
   })
   )
+  
 }
-
+carouselButton(buttonLeft, imageArray, true);
+carouselButton(buttonRight, imageArray, false);
+}
 function createCarousel(){
   let carouselDiv = createHTMLElement('div', 'carousel');
   let leftButton = createHTMLElement('div', 'left-button');
@@ -83,11 +86,12 @@ function createCarousel(){
 
   let imageArray = [firstImage, secondImage, thirdImage, fourthImage];
 
-  let btnForward = carouselButton(rightButton, imageArray, true);
-  let btnBackward = carouselButton(leftButton, imageArray, false);
-
-  btnForward;
-  btnBackward;
+  // let btnForward = carouselButton(rightButton, imageArray, true);
+  // let btnBackward = carouselButton(leftButton, imageArray, false);
+  let buttonEventListeners = addButtonListeners(leftButton, rightButton, imageArray)
+  // btnForward;
+  // btnBackward;
+  buttonEventListeners;
 
   firstImage.style.display = 'inline-block';
 
