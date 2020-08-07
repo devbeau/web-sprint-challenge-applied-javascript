@@ -42,6 +42,7 @@ function getCardData () { // function to get from article api and invoke card cr
         })
         .catch((error) => {
             console.log("getCardData Error", error);
+            createError();
             debugger;
         })
 
@@ -85,6 +86,16 @@ function createCards(articleObj){ // creates the article component and appends i
     let container = document.querySelector('.cards-container');
     
     return container.appendChild(cardDiv);
+}
+
+function createError(){
+    let errorDiv = createHTMLElement('div', 'error', 'There has been a communication error with the server!');
+    errorDiv.style.color = 'red';
+    errorDiv.style.fontSize = '4rem';
+    errorDiv.style.border = '3px red solid'
+    errorDiv.style.fontWeight = 'bolder';
+    let container = document.querySelector('.errors-container');
+    return container.appendChild(errorDiv);
 }
 
 getCardData(); // invoke the api call
