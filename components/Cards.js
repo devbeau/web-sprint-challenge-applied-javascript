@@ -21,22 +21,24 @@
 //
 // Use your function to create a card for each of the articles, and append each card to the DOM.
 
-function getCardData () {
+function attachTopic (articleArrayObj){
+    
+}
+
+function getCardData () { // function to get from article api and invoke card creation on each article
     axios.get('https://lambda-times-api.herokuapp.com/articles')
         .then((response) => {
             console.log(response.data);
-            let bootstrapArticles = response.data.articles.bootstrap;
-            let jsArticles = response.data.articles.javascript;
-            let jqueryArticles = response.data.articles.jquery;
-            let nodeArticles = response.data.articles.node;
-            let techArticles = response.data.articles.technology;
-            console.log(bootstrapArticles);
-            let bigArticleArray = bootstrapArticles.concat(jsArticles, jqueryArticles,
-                                                           nodeArticles, techArticles);
-            console.log(bigArticleArray);
-            bigArticleArray.forEach(item => {
-                createCards(item);
-            })
+            console.log(response.data.articles.keys);
+            let articleData = response.data.articles;
+            
+            for (let articleTopic in articleData){
+                console.log (articleData[articleTopic]);
+                articleData[articleTopic].forEach(item => {
+                    item.topic = articleTopic;
+                    createCards(item);
+                });
+            }
         })
         .catch((error) => {
             console.log("getCardData Error", error);
@@ -46,14 +48,14 @@ function getCardData () {
     }
 
 
-function createHTMLElement(htmlElement, className = 0, textContent = 0){
+function createHTMLElement(htmlElement, className = 0, textContent = 0){ // createElement with className and textContent
     let element = document.createElement(htmlElement);
     className !== 0 ? element.classList.add(className) : element;
     textContent !== 0 ? element.textContent = textContent : element.textContent = null;
     return element;
 }
 
-function textContentOnClick(element, targetTextElement) {
+function textContentOnClick(element, targetTextElement) { //adds event listener to return textContent on target element
     element.addEventListener('click', (event) => {
         console.log("headlineOnClick -> event", event)
         console.log(targetTextElement.textContent);
@@ -61,13 +63,14 @@ function textContentOnClick(element, targetTextElement) {
     return 0;
 }
 
-function createCards(articleObj){
+function createCards(articleObj){ // creates the article component and appends it to the container
     let cardDiv =      createHTMLElement('div', 'card');
     let headlineDiv =  createHTMLElement('div', 'headline', `${articleObj.headline}`);
     let authorDiv =    createHTMLElement('div', 'author')
     let imgContainer = createHTMLElement('div', 'img-container');
     let authorImg =          createHTMLElement('img');
-    let authorSpan   = createHTMLElement('span', 0 , `${articleObj.authorName}`)
+    let authorSpan   = createHTMLElement('span', 0 , `${articleObj.authorName}`);
+    let topicSpan =    createHTMLElement('span','topic', `${articleObj.topic}`);
 
     authorImg.setAttribute('src', `${articleObj.authorPhoto}`);
 
@@ -76,7 +79,7 @@ function createCards(articleObj){
     authorDiv.appendChild(imgContainer);
     imgContainer.appendChild(authorImg);
     authorDiv.appendChild(authorSpan);
-
+    authorDiv.appendChild(topicSpan);
     textContentOnClick(cardDiv, headlineDiv);
 
     let container = document.querySelector('.cards-container');
@@ -84,4 +87,4 @@ function createCards(articleObj){
     return container.appendChild(cardDiv);
 }
 
-getCardData();
+getCardData(); // invoke the api call

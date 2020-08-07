@@ -11,14 +11,14 @@
 // Use your function to create a header
 // and append it to the DOM inside the div.header-container
 
-function createHTMLElement(htmlElement, className = 0, textContent = 0){
+function createHTMLElement(htmlElement, className = 0, textContent = 0){ //create html element w className and textContent
     let element = document.createElement(htmlElement);
     className !== 0 ? element.classList.add(className) : element;
     textContent !== 0 ? element.textContent = textContent : element.textContent = null;
     return element;
 }
 
-function createHeader() {
+function createHeader() { // create the header component and attach it to the container
 
 let headerDiv = createHTMLElement('div', 'header');
 let headerSpanOne = createHTMLElement('span', 'date', 'March 28, 2020');
@@ -40,4 +40,4 @@ console.log(container);
 return container.appendChild(headerDiv);
 }
 
-createHeader();
+createHeader(); // invoke the function
