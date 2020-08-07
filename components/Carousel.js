@@ -39,17 +39,18 @@ function createImageElement(source, id){
  image.style.borderRadius = '200px';
  return image;
 }
-function addButtonListeners(buttonLeft, buttonRight, imageArray){
-  let state = 1; 
-  function carouselButton(button, imageArray, forward = true){
-  return (button.addEventListener('click', (event) => {
+
+function addButtonListeners(buttonLeft, buttonRight, imageArray){ // double closure
+  let state = 1; //shared state variable
+  function carouselButton(button, imageArray, forward = true){ //first closure
+  return (button.addEventListener('click', (event) => { 
     if (forward){
-      state === 4 ? state = 1 : state += 1;
+      state === 4 ? state = 1 : state += 1; //wrap around right
       } else {
-      state === 1 ? state = 4 : state -= 1;
+      state === 1 ? state = 4 : state -= 1; //wrap around left
       }
 
-    imageArray.forEach(image => {
+    imageArray.forEach(image => { //checks last digit of id for match of state and changes image
       let splitString= image.id.split("");
       let imgNum = Number.parseInt(splitString[splitString.length -1]);
       console.log(imgNum);
@@ -65,10 +66,11 @@ function addButtonListeners(buttonLeft, buttonRight, imageArray){
   )
   
 }
-carouselButton(buttonLeft, imageArray, true);
-carouselButton(buttonRight, imageArray, false);
+carouselButton(buttonLeft, imageArray, true); //invoke left button
+carouselButton(buttonRight, imageArray, false); //invoke right button
 }
-function createCarousel(){
+
+function createCarousel(){ //creates carousel and appends it to container
   let carouselDiv = createHTMLElement('div', 'carousel');
   let leftButton = createHTMLElement('div', 'left-button');
   let firstImage = createImageElement('https://tk-assets.lambdaschool.com/ba687af4-3a1e-43d7-87b2-f30453264c9d_mountains.jpeg', 'image-1');
@@ -86,18 +88,16 @@ function createCarousel(){
 
   let imageArray = [firstImage, secondImage, thirdImage, fourthImage];
 
-  // let btnForward = carouselButton(rightButton, imageArray, true);
-  // let btnBackward = carouselButton(leftButton, imageArray, false);
   let buttonEventListeners = addButtonListeners(leftButton, rightButton, imageArray)
-  // btnForward;
-  // btnBackward;
-  buttonEventListeners;
+  
+  buttonEventListeners; //invoke carousel button closure
 
   firstImage.style.display = 'inline-block';
 
   firstImage.style
+
   let container = document.querySelector('.carousel-container');
   return container.appendChild(carouselDiv);
 }
 
-createCarousel();
+createCarousel(); //invoke function;
